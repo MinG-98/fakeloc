@@ -1,0 +1,2 @@
+#!/bin/bash
+cat /tmp/.fakeloc_pw 2>/dev/null
