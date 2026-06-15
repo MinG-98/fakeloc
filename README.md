@@ -1,12 +1,12 @@
 # fakeloc
 
-> iPhone GPS 虛拟定位工具 / iPhone GPS spoofing tool over USB
+> iPhone GPS 虚拟定位工具 / iPhone GPS spoofing tool over USB
 
 [英文](./README_EN.md) | [完整文档](./docs/README.md)
 
 ---
 
-iPhone GPS 虛拟定位工具，基於
+iPhone GPS 虚拟定位工具，基于
 [pymobiledevice3](https://github.com/doronz88/pymobiledevice3)，通过 USB 连接修改 iPhone 坐标。
 
 ## 功能
@@ -24,7 +24,7 @@ iPhone GPS 虛拟定位工具，基於
 git clone https://github.com/MinG-98/fakeloc.git
 cd fakeloc
 
-# 创建并激活虛拟环境
+# 创建并激活虚拟环境
 python3 -m venv .venv
 source .venv/bin/activate
 
