@@ -6,34 +6,35 @@
 
 ---
 
-iPhone GPS 虛拟定位工具，基於 [pymobiledevice3](https://github.com/doronz88/pymobiledevice3)，通過 USB 連接修改 iPhone 坐標。
+iPhone GPS 虛拟定位工具，基於
+[pymobiledevice3](https://github.com/doronz88/pymobiledevice3)，通过 USB 连接修改 iPhone 坐标。
 
 ## 功能
 
-- **命令行工具** (`fakeloc`) — 終端一行命令修改定位
-- **圖形界面** (`fakeloc-gui`) — macOS 浮動窗口，點擊按鈕操作
-- **預設位置** — 內置全球多個常用城市坐標
-- **持續保持** — 自動每秒重發坐標，防止定位跳回真實位置
+- **命令行工具** (`fakeloc`) — 终端一行命令修改定位
+- **图形界面** (`fakeloc-gui`) — macOS 浮动窗口，点击按钮操作
+- **预设位置** — 内置全球多个常用城市坐标
+- **持续保持** — 自动每秒重发坐标，防止定位跳回真实位置
 
-## 快速開始
+## 快速开始
 
-### 安裝
+### 安装
 
 ```bash
 git clone https://github.com/MinG-98/fakeloc.git
 cd fakeloc
 
-# 創建並激活虛擬環境
+# 创建并激活虛拟环境
 python3 -m venv .venv
 source .venv/bin/activate
 
-# 安裝（僅 CLI）
+# 安装（仅 CLI）
 pip install .
 
-# 安裝（含 GUI 支援，僅 macOS）
+# 安装（含 GUI 支持，仅 macOS）
 pip install ".[gui]"
 
-# 安裝 sudo 密碼輔助腳本（GUI 需要）
+# 安装 sudo 密码辅助脚本（GUI 需要）
 chmod +x scripts/fakeloc-askpass
 cp scripts/fakeloc-askpass ~/.local/bin/
 ```
@@ -41,20 +42,20 @@ cp scripts/fakeloc-askpass ~/.local/bin/
 ### 基本使用
 
 ```bash
-# 啟動 RSD 隧道（需 sudo）
+# 启动 RSD 隧道（需 sudo）
 fakeloc up
 
-# 使用預設位置
-fakeloc sf          # 舊金山
-fakeloc nyc         # 紐約
-fakeloc clear       # 恢復真實定位
+# 使用预设位置
+fakeloc sf          # 旧金山
+fakeloc nyc         # 纽约
+fakeloc clear       # 恢复真实定位
 
-# 圖形界面
+# 图形界面
 fakeloc-gui
 ```
 
-更多詳情請看 [完整文档](./docs/README.md)。
+更多详情请看 [完整文档](./docs/README.md)。
 
-## 許可
+## 许可
 
 [MIT](LICENSE)
