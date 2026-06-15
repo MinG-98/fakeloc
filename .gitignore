@@ -32,7 +32,21 @@ ENV/
 htmlcov/
 .tox/
 
-# fakeloc state files
+# fakeloc state files (never commit these)
 .fakeloc_tunnel.json
 .fakeloc_sim.pid
+.fakeloc_pw
 /tmp/.fakeloc_pw
+
+# Environment & secrets
+.env
+.env.*
+*.env
+secrets/
+*.pem
+*.key
+
+# Logs and temp
+*.log
+*.tmp
+*~
