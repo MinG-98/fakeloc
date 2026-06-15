@@ -1,117 +1,137 @@
-# 📍 fakeloc
+# fakeloc
 
-iPhone 虚拟定位工具，基于 [pymobiledevice3](https://github.com/doronz88/pymobiledevice3)，通过 USB 修改 iPhone GPS 坐标。
+iPhone GPS spoofing tool over USB, powered by
+[pymobiledevice3](https://github.com/doronz88/pymobiledevice3).
 
-## 功能
+## Features
 
-- **CLI 工具** (`fakeloc`) — 终端一行命令修改定位
-- **GUI 工具** (`fakeloc_app.py`) — macOS 浮动窗口，点按钮操作
-- **预设位置** — 内置全球多个常用坐标
-- **持续保持** — 自动每秒重发坐标，防止定位跳回
+- **CLI** (`fakeloc`) — one-liner terminal commands to change GPS coordinates
+- **GUI** (`fakeloc-gui`) — native macOS floating window with preset buttons
+- **Preset locations** — built-in coordinates for major cities worldwide
+- **Keep-alive** — automatically resends coordinates every second to prevent GPS reversion
 
-## 环境要求
+## Requirements
 
-- macOS（已在 macOS 26 上测试）
+- macOS (tested on macOS 14+)
 - Python 3.10+
-- iPhone（USB 连接，已开启开发者模式）
-- sudo 权限（启动隧道需要）
+- iPhone connected via USB with Developer Mode enabled
+- sudo access (required to start the RSD tunnel)
 
-## 安装
+## Installation
+
+### From source
 
 ```bash
-# 1. 克隆仓库
 git clone https://github.com/MinG-98/fakeloc.git
 cd fakeloc
 
-# 2. 创建虚拟环境
-python3 -m venv ~/fakeloc-venv
-~/fakeloc-venv/bin/pip install pymobiledevice3
+# Create and activate a virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
 
-# 3. 设置脚本权限
-chmod +x fakeloc-askpass
+# Install (CLI only)
+pip install .
+
+# Install with GUI support (macOS only)
+pip install ".[gui]"
+
+# Install the askpass helper (for GUI sudo)
+chmod +x scripts/fakeloc-askpass
+cp scripts/fakeloc-askpass ~/.local/bin/
 ```
 
-### iPhone 开发者模式
+### Using pipx (CLI only)
 
-首次使用需要开启：
+```bash
+pipx install .
+```
 
-1. 用 USB 连接 iPhone 到 Mac
-2. 运行一次 `pymobiledevice3 usbmux list`（确认设备被识别）
-3. iPhone 上：**设置 → 隐私与安全性 → 开发者模式** → 开启
-4. iPhone 会要求重启
+## Configuration
 
-## 使用方法
+All paths are configurable via environment variables:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `FAKELOC_PMD3` | `~/fakeloc-venv/bin/pymobiledevice3` | Path to pymobiledevice3 binary |
+| `FAKELOC_ASKPASS` | `~/.local/bin/fakeloc-askpass` | Path to sudo askpass helper |
+| `FAKELOC_STATE_DIR` | `$HOME` | Directory for tunnel state file |
+| `FAKELOC_PASSWORD_FILE` | `/tmp/.fakeloc_pw` | Temp file for sudo password |
+
+## iPhone Developer Mode
+
+Required on first use:
+
+1. Connect iPhone to Mac via USB
+2. Run `pymobiledevice3 usbmux list` to verify the device is recognized
+3. On iPhone: **Settings → Privacy & Security → Developer Mode** → Enable
+4. iPhone will require a restart
+
+## Usage
 
 ### CLI
 
 ```bash
-# 创建快捷命令（可选）
-cat > ~/.local/bin/fakeloc << 'EOF'
-#!/bin/bash
-exec ~/fakeloc-venv/bin/python3 /path/to/fakeloc.py "$@"
-EOF
-chmod +x ~/.local/bin/fakeloc
-
-# 启动隧道（需 sudo，只输一次密码）
+# Start the RSD tunnel (requires sudo, password asked once)
 fakeloc up
 
-# 设定位置
-fakeloc sf          # 旧金山
-fakeloc nyc         # 纽约
-fakeloc tokyo       # 东京
-fakeloc cdrcb       # 成都华阳
-fakeloc set 35.67 139.65  # 自定义坐标
+# Set location by preset
+fakeloc sf          # San Francisco
+fakeloc nyc         # New York
+fakeloc tokyo       # Tokyo
+fakeloc cdrcb       # Chengdu
 
-# 恢复真实定位
+# Set custom coordinates
+fakeloc set 35.67 139.65
+
+# Restore real location
 fakeloc clear
+
+# Check status
+fakeloc status
+
+# List all presets
+fakeloc presets
 ```
 
 ### GUI
 
 ```bash
-~/fakeloc-venv/bin/python fakeloc_app.py
+fakeloc-gui
 ```
 
-1. 点击 **启动隧道** → 输入 Mac 密码
-2. 选择预设位置 → 点击 **设定位置**
-3. 状态栏显示 `✅ 定位保持中` 即成功
-4. 点击 **重置定位** 恢复真实位置
+1. Click **Start Tunnel** → enter your Mac password
+2. Select a preset or enter coordinates
+3. Click **Set Location** — status shows `✅ Location held` when active
+4. Click **Reset Location** to restore real GPS
 
-## 预设位置
+## Preset Locations
 
-| 命令 | 地点 | 坐标 |
-|------|------|------|
-| `sf` | 旧金山 | 37.7749, -122.4194 |
-| `nyc` | 纽约曼哈顿 | 40.7128, -74.0060 |
-| `la` | 洛杉矶 | 34.0522, -118.2437 |
-| `tokyo` | 东京涩谷 | 35.6762, 139.6503 |
-| `shanghai` | 上海外滩 | 31.2304, 121.4737 |
-| `beijing` | 北京天安门 | 39.9042, 116.4074 |
-| `cdrcb` | 成都华阳 | 30.4799, 104.0300 |
-| `hk` | 香港中环 | 22.3193, 114.1694 |
-| 更多... | 运行 `fakeloc presets` 查看 | |
+- **US:** `sf` `nyc` `la` `vegas` `miami` `dc`
+- **Asia:** `shanghai` `beijing` `shenzhen` `tokyo` `seoul` `hk` `taipei`
+- **Other:** `london` `paris` `sydney` `mars`
+- Run `fakeloc presets` for the full list with coordinates
 
-## 工作原理
+## How It Works
 
 ```
 Mac (pymobiledevice3) --USB--> iPhone
         |
-        ├── 启动 RSD 隧道 (sudo)
-        ├── 通过 DVT 服务发送模拟坐标
-        └── 每秒重发保持定位不掉
+        ├── Start RSD tunnel (sudo)
+        ├── Send simulated coordinates via DVT service
+        └── Resend every second to keep location stable
 ```
 
-1. `pymobiledevice3 remote start-tunnel` 通过 USB 建立与 iPhone 的 RSD 隧道
-2. `pymobiledevice3 developer dvt simulate-location set` 发送 GPS 坐标
-3. iPhone 的 CoreLocation 框架接收到假坐标，所有 App 都会使用它
+1. `pymobiledevice3 remote start-tunnel` establishes an RSD tunnel over USB
+2. `pymobiledevice3 developer dvt simulate-location set` sends GPS coordinates
+3. iPhone's CoreLocation framework receives the spoofed coordinates — all apps use them
 
-## 局限性
+## Limitations
 
-- ⚠️ **只能骗 GPS 坐标**，WiFi 定位、基站定位、IP 定位不受影响
-- ⚠️ 国内 App（如抖音）可能通过 WiFi BSSID / 基站 / IP 识别真实位置
-- ⚠️ iPhone 必须保持 USB 连接，断开即恢复真实定位
-- ⚠️ 需要 sudo 权限（启动隧道时）
+- ⚠️ **GPS only** — WiFi positioning, cell tower triangulation, and IP geolocation are not affected
+- ⚠️ Some apps may detect spoofing via WiFi BSSID / cell tower / IP cross-check
+- ⚠️ iPhone must remain USB-connected; disconnecting restores real location
+- ⚠️ Requires sudo access for the initial tunnel setup
 
-## 许可
+## License
 
-MIT
+[MIT](LICENSE)

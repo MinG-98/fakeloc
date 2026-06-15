@@ -1,9 +1,38 @@
+# Python
 __pycache__/
-*.pyc
-*.pyo
-.venv/
-*.egg-info/
-dist/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
 build/
+dist/
+*.egg-info/
+*.egg
+src/*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# fakeloc state files
 .fakeloc_tunnel.json
 .fakeloc_sim.pid
+/tmp/.fakeloc_pw

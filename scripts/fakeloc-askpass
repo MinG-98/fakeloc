@@ -1,0 +1,3 @@
+#!/bin/bash
+# askpass helper — reads password from temp file written by the GUI
+cat /tmp/.fakeloc_pw 2>/dev/null

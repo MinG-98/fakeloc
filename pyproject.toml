@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68.0", "setuptools-scm>=8.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fakeloc"
+version = "0.1.0"
+description = "iPhone GPS spoofing over USB via pymobiledevice3"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "MinG-98"},
+]
+dependencies = [
+    "pymobiledevice3>=1.0",
+]
+
+[project.optional-dependencies]
+gui = [
+    "pyobjc-core>=10.0",
+    "pyobjc-framework-Cocoa>=10.0",
+]
+
+[project.scripts]
+fakeloc = "fakeloc.cli:main"
+fakeloc-gui = "fakeloc.gui:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

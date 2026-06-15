@@ -1,0 +1,3 @@
+"""fakeloc - iPhone GPS spoofing via USB using pymobiledevice3."""
+
+__version__ = "0.1.0"
